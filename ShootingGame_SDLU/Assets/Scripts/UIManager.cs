@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] GameObject submitControls;
+
     public Image hpGage;
     //public Text gameOverText;
     public GameObject player;
@@ -28,8 +30,8 @@ public class UIManager : MonoBehaviour
             //gameOverText.gameObject.SetActive(true);
             GameOver.TextMove();
             GameOver.DestroyText();
+
+            submitControls.SetActive(true);
         }
     }
-
 }
-

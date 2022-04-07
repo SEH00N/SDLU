@@ -33,6 +33,7 @@ public class EnemyMove : MonoBehaviour
         if(collision.CompareTag("Player") || collision.CompareTag("Bullet"))
         {
             Destroy(gameObject);
+            TestUIManager.Instance.PlusScore();
         }
 
         if (collision.CompareTag("Player"))
