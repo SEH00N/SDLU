@@ -1,22 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Text_ : MonoBehaviour
 {
     // Start is called before the first frame update
     public float speed = 5;
     public EnemySpawn EnemySpawn_;
+    float time;
+    [SerializeField] GameObject submitControls;
 
     void Start()
     {
         EnemySpawn_ = FindObjectOfType<EnemySpawn>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void TextMove()
@@ -26,8 +23,10 @@ public class Text_ : MonoBehaviour
 
     public void DestroyText()
     {
+        time += Time.deltaTime;
         EnemySpawn_.StopAllCoroutines();
-        Destroy(gameObject, 5f);
+        if(time >= 2)
+        gameObject.SetActive(false);
     }
 
     //void OnDestroy()

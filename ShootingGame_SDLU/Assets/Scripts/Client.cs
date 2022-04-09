@@ -33,7 +33,7 @@ public class Client : MonoBehaviour
 
     public void SubmitScore()
     {
-        string data = "score:" + nicknameInput.text + "," + TestUIManager.Instance,Score;
+        string data = "score:" + nicknameInput.text + "," + TestUIManager.Instance.score;
         _client.Send(data);
     }
 }

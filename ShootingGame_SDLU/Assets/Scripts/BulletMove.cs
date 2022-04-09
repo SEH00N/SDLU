@@ -6,8 +6,9 @@ public class BulletMove : MonoBehaviour
 {
     public float speed = 15;
 
-    private void Start()
+    void Start()
     {
+        speed = 15;
         Destroy(gameObject, 2f);
     }
 
