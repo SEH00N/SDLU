@@ -276,8 +276,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB2C9\uB134 : \uC810\uC218\n\uB2C9\uB134 : \uC810\uC218\n\uB2C9\uB134
-    : \uC810\uC218\n\uB2C9\uB134 : \uC810\uC218\n\uB2C9\uB134 : \uC810\uC218"
+  m_Text: 
 --- !u!1 &368982263
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9b75dc05e60df14fac818b1c9d6ce86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scorekey: SCORE
   score: 0
 --- !u!4 &893809651
 Transform:
@@ -886,6 +886,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1469362266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1469362268}
+  - component: {fileID: 1469362267}
+  m_Layer: 0
+  m_Name: BufferHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1469362267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469362266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa78197018ffc854687e5bbf1b092ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scores: {fileID: 121894837}
+--- !u!4 &1469362268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469362266}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.5054646, y: -0.43356717, z: -330.52585}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1532436476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,7 +1108,7 @@ MonoBehaviour:
   currentScoreUI: {fileID: 1687614300}
   bestScoreUI: {fileID: 0}
   bestScore: 0
-  score: 15
+  score: 0
 --- !u!4 &1887175836
 Transform:
   m_ObjectHideFlags: 0

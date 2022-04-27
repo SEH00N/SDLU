@@ -1,4 +1,4 @@
-- 서버
+//- 서버
 const ws = require('ws');
 const fs = require('fs');
 
@@ -27,6 +27,7 @@ wss.on('listening', () => {
 //웹소켓서버에 클라이언트가 접속했을 때
 wss.on('connection', socket => {
     console.log('유저가 접속!');
+    sendScores(socket);
     socket.on('message', message => {
         const type = message.toString().split(':') [0]; //message변수에서 ":"를 중심으로 잘라 [0] 자리의 값을 type변수에 저장
         

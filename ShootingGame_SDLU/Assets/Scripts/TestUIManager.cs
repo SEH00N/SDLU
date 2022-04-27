@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TestUIManager : MonoBehaviour
 {
-    public static TestUIManager Instance
+    public static TestUIManager Instance //½Ì±ÛÅæ ÆÐÅÏ get set proeprty °Ù ¼Â ÇÁ·ÎÆÛÆ¼
     {
-        get
+        get 
         {
             if(instance == null)
             {
@@ -18,12 +18,14 @@ public class TestUIManager : MonoBehaviour
 
     private static TestUIManager instance;
 
-
+    [SerializeField] private string _scorekey = "SCORE";
 
     public int score = 0;
 
     public void PlusScore()
-    {        
+    {
+        PlayerPrefs.SetInt(_scorekey, score);
+        int _score = PlayerPrefs.GetInt(_scorekey, 0);
         score++;
     }
 }

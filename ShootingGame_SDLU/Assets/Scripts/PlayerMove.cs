@@ -98,8 +98,24 @@ public class PlayerMove : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(bullet, new Vector3(transform.position.x, transform.position.y + 0.1f, 0), Quaternion.identity);
+            SpawnOrInstantiate();
             yield return new WaitForSeconds(FireDelay);
+        }
+    }
+
+    private void SpawnOrInstantiate()
+    {
+        if(GameManager.Instance.Pooling.childCount > 0)
+        {
+            Transform bullet = GameManager.Instance.Pooling.GetChild(0);
+            bullet.gameObject.SetActive(true);
+            bullet.SetParent(null);
+            bullet.position = transform.position;
+        }
+        else
+        {
+            Instantiate(bullet, new Vector3(transform.position.x, transform.position.y + 0.1f, 0), Quaternion.identity);
+            Debug.Log("123");
         }
     }
 
@@ -107,7 +123,7 @@ public class PlayerMove : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(bullet, new Vector3(transform.position.x - 0.5f, transform.position.y + 0.1f, 0), Quaternion.EulerRotation(0, 0, 0.1f));
+            Instantiate(bullet, new Vector3(transform.position.x - 0.5f, transform.position.y + 0.1f, 0), Quaternion.Euler(0, 0, 15f));
             yield return new WaitForSeconds(FireDelay);
         }
     }
@@ -116,7 +132,7 @@ public class PlayerMove : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(bullet, new Vector3(transform.position.x + 0.5f, transform.position.y + 0.1f, 0), Quaternion.EulerRotation(0, 0, -0.1f));
+            Instantiate(bullet, new Vector3(transform.position.x + 0.5f, transform.position.y + 0.1f, 0), Quaternion.Euler(0, 0, -15f));
             yield return new WaitForSeconds(FireDelay);
         }
     }

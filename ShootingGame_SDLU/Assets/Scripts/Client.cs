@@ -28,7 +28,8 @@ public class Client : MonoBehaviour
     private void OnMessage(object sender, MessageEventArgs e)
     {
         string result = e.Data.Replace('|', '\n').Replace(",", ": ");
-        scoreText.text = result;
+        BufferHandler._textQueue.Enqueue(result);
+        //BufferHandler.Instance.Add(result);
     }
 
     public void SubmitScore()

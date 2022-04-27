@@ -6,16 +6,10 @@ public class BulletMove : MonoBehaviour
 {
     public float speed = 15;
 
-    void Start()
-    {
-        speed = 15;
-        Destroy(gameObject, 2f);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         BulletMovement();
+        Limit();
     }
 
     private void BulletMovement()
@@ -26,6 +20,23 @@ public class BulletMove : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Enemy") || collision.CompareTag("FireEnemy"))
-        Destroy(gameObject);
+        DeSpawn();
+    }
+
+    private void Limit()
+    {
+        if(transform.position.x > GameManager.Instance.maxPos.position.x ||
+           transform.position.y > GameManager.Instance.maxPos.position.y ||
+           transform.position.x < GameManager.Instance.minPos.position.x ||
+           transform.position.y < GameManager.Instance.minPos.position.y)
+        {
+            DeSpawn();
+        }
+    }
+
+    private void DeSpawn()
+    {
+        transform.SetParent(GameManager.Instance.Pooling);
+        gameObject.SetActive(false);
     }
 }
