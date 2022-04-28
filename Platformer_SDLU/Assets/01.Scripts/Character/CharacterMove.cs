@@ -6,11 +6,11 @@ public class CharacterMove : MonoBehaviour
 {
     [SerializeField] protected float speed = 10f;
 
-    public bool isFacingRight { get; private set; } = false;
+    public bool IsFacingRight { get; private set; } = false;
 
     protected Rigidbody2D rb2d = null;
 
-    private void Awake()
+    protected virtual void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
@@ -18,8 +18,8 @@ public class CharacterMove : MonoBehaviour
     private void ChangeChasing()
     {
         if(rb2d.velocity.x >= 0.1f) //오른쪽 방향
-            isFacingRight = true;
+            IsFacingRight = true;
         else //왼쪽 방향
-            isFacingRight = false;
+            IsFacingRight = false;
     }
 }
