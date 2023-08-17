@@ -6,9 +6,9 @@ public class Object : EntityBase
 {
     [SerializeField] private string objectName = null;
 
-    private void OnCollisionStay2D(Collision2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
             Dead(objectName);
     }
 }

@@ -15,11 +15,16 @@ public class CharacterMove : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    protected virtual void Update()
+    {
+        ChangeChasing();
+    }
+
     private void ChangeChasing()
     {
         if(rb2d.velocity.x >= 0.1f) //오른쪽 방향
             IsFacingRight = true;
-        else //왼쪽 방향
+        else if(rb2d.velocity.x <= -0.1f)//왼쪽 방향
             IsFacingRight = false;
     }
 }
