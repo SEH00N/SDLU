@@ -36,8 +36,8 @@
             //test10.Start();
             //Console.WriteLine("This is last of main thread");
 
-            LockTest test11 = new LockTest();
-            test11.Start();
+            //LockTest test11 = new LockTest();
+            //test11.Start();
 
             Console.ReadKey();
         }
