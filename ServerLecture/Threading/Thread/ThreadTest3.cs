@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MyThread
+namespace MyThreading
 {
     public class ThreadTest3
     {
@@ -10,13 +10,13 @@ namespace MyThread
             Thread thread1 = new Thread(Thread1);
             Thread thread2 = new Thread(Thread2);
 
+            // 백그라운드 스레드 => 모든 Foreground 스레드가 종료되면 같이 종료 됨
+            // 포그라운드 스레드 => 하나의 Foreground 스레드라도 존재한다면 프로세스는 종료되지 않음
+            thread1.IsBackground = true;
+            thread2.IsBackground = true;
+
             thread1.Start();
             thread2.Start();
-
-            // 백그라운드 스레드 => 메인 스레드가 종료되면 같이 종료 됨
-            // 포그라운드 스레드 => 메인 스레드가 종료되면 메인스레드로 연임 됨
-            thread1.IsBackground = false;
-            thread2.IsBackground = false;
 
             Console.WriteLine("This is main");
         }

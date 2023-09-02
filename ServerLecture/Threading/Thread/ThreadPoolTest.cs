@@ -8,8 +8,8 @@ namespace MyThreading
         public void Start()
         {
             // 스레드 풀을 사용한 방식 (무조건 매개변수를 받아야 함)
-            ThreadPool.QueueUserWorkItem(Work1);
-            ThreadPool.QueueUserWorkItem(Work2);
+            ThreadPool.QueueUserWorkItem(Work1, 10);
+            ThreadPool.QueueUserWorkItem(Work2, "This is String");
 
             Console.WriteLine("This is main");
 
@@ -18,14 +18,12 @@ namespace MyThreading
 
         private void Work1(object obj)
         {
-            for (int i = 0; i < 100; i++)
-                Console.WriteLine($"Work1 : {i}");
+            Console.WriteLine($"Work1 : {obj}");
         }
 
         private void Work2(object obj)
         {
-            for (int i = 0; i < 100; i++)
-                Console.WriteLine($"Work2 : {i}");
+            Console.WriteLine($"Work2 : {obj}");
         }
     }
 }

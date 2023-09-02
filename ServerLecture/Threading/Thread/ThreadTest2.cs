@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MyThread
+namespace MyThreading
 {
     public class ThreadTest2
     {

@@ -32,8 +32,8 @@
             //test9.Start();
             //test9.Start();
 
-            //AsyncTest4 test10 = new AsyncTest4();
-            //test10.Start();
+            AsyncTest4 test10 = new AsyncTest4();
+            test10.Start();
             //Console.WriteLine("This is last of main thread");
 
             Console.ReadKey();
