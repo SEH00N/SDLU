@@ -4,7 +4,7 @@ using System;
 
 namespace Server
 {
-    internal class Program
+    public class Program
     {
         private static Listener listener;
 
@@ -17,13 +17,18 @@ namespace Server
 
             listener = new Listener(endPoint, 10, OnMessageReceived); // 리스너 생성
             listener.StartAccept(); // 소켓 받아들이기 시작
+
+            while(true)
+            {
+                // 메인 스레드가 꺼지지 않도록 유지
+            }
         }
 
         private static void OnMessageReceived(Socket socket, string msg)
         {
             IPEndPoint clientEndPoint = (socket.RemoteEndPoint as IPEndPoint); // 소켓 종단점 받기
 
-            string message = $"{clientEndPoint.Address} : {msg}"; // 출력할 메세지 생성 {보낸 IP : 메세지} 형태
+            string message = $"[{clientEndPoint.Address}] {msg}"; // 출력할 메세지 생성 {보낸 IP : 메세지} 형태
             Console.WriteLine(message); // 메세지 출력
             listener.Broadcast(message); // 받은 메세지를 모든 클라이언트들에게 전송
 

@@ -12,8 +12,10 @@ namespace Server
         private List<Socket> clientSockets = new List<Socket>(); // 리슨소켓과 연결 되어있는 소켓 리스트
 
         private Action<Socket, string> onMessageReceivedEvent; // 메세지가 받아졌을 때 실행시킬 이벤트
+        private SocketAsyncEventArgs sendArgs; // 데이터를 보낼 때 사용하는 인자
 
-        private object locker = new object();
+        private object clientSocketsLocker = new object();
+        private object handlerLocker = new object();
 
         public Listener(IPEndPoint endPoint, int backlog, Action<Socket, string> onMessageReceived)
         {
@@ -23,17 +25,15 @@ namespace Server
             listenSocket.Listen(backlog);
 
             onMessageReceivedEvent += onMessageReceived; // 콜백 구독
+            sendArgs = new SocketAsyncEventArgs();
         }
 
         public void Broadcast(string message)
         {
             byte[] sendBytes = Encoding.UTF8.GetBytes(message); // 메세지 변환
+            sendArgs.SetBuffer(sendBytes); // 보낼 메세지 버퍼 세팅
 
-            // 클라이언트들에게 보낼 데이터
-            SocketAsyncEventArgs sendArgs = new SocketAsyncEventArgs();
-            sendArgs.SetBuffer(sendBytes);
-
-            lock(locker) // clientSockets 라킹
+            lock (clientSocketsLocker) // clientSockets 라킹
                 clientSockets.ForEach(socket => socket.SendAsync(sendArgs)); // 모든 클라이언트들에게 메세지 전송
         }
 
@@ -53,8 +53,12 @@ namespace Server
             {
                 Socket clientSocket = args.AcceptSocket;
                 StartReceive(clientSocket); // 메세지 수신 시작
-                lock(locker) // clientSockets 라킹
+                lock(clientSocketsLocker) // clientSockets 라킹
                     clientSockets.Add(clientSocket); // 소켓 리스트에 추가
+
+                // 디버깅
+                IPEndPoint clientSocketEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
+                Console.WriteLine($"클라이언트가 접속하였습니다. [{clientSocketEndPoint.Address}]");
             }
             else // 소켓 받아들이기에 실패했다면
                 Console.WriteLine(args.SocketError); // 소켓에러 출력
@@ -73,12 +77,21 @@ namespace Server
 
         public void Kick(Socket socket)
         {
-            // 소켓 내보내기
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
+            try
+            {
+                // 디버깅
+                IPEndPoint clientSocketEndPoint = socket.RemoteEndPoint as IPEndPoint;
 
-            lock(locker) // clientSockets 라킹
-                clientSockets.Remove(socket); // clientSockets에서 내보낸 소켓 지우기
+                // 소켓 내보내기
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+
+                lock (clientSocketsLocker) // clientSockets 라킹
+                    clientSockets.Remove(socket); // clientSockets에서 내보낸 소켓 지우기
+
+                Console.WriteLine($"클라이언트가 접속 해제하였습니다. [{clientSocketEndPoint.Address}]");
+            }
+            catch { }
         }
 
         #endregion
@@ -110,7 +123,7 @@ namespace Server
             if (args.SocketError == SocketError.Success && args.BytesTransferred > 0) // 만약 받은 메세지의 길이가 0보다 크고 성공적으로 통신이 되었다면
             {
                 string receivedMessage = Encoding.UTF8.GetString(args.Buffer, 0, args.BytesTransferred); // 받은 메세지 변환
-                lock(locker) // onMessageReceivedEvent 라킹
+                lock(handlerLocker) // onMessageReceivedEvent 라킹
                     onMessageReceivedEvent?.Invoke(socket, receivedMessage); // onMessageReceivedEvent 발행
 
                 Receive(socket, args); // 다시 메세지 수신 시작
