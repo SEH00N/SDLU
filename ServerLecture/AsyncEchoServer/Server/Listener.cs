@@ -14,8 +14,8 @@ namespace Server
         private Action<Socket, string> onMessageReceivedEvent; // 메세지가 받아졌을 때 실행시킬 이벤트
         private SocketAsyncEventArgs sendArgs; // 데이터를 보낼 때 사용하는 인자
 
-        private object clientSocketsLocker = new object();
-        private object handlerLocker = new object();
+        private object clientSocketsLocker = new object(); // 소켓 리스트 자물쇠
+        private object handlerLocker = new object(); // 핸들러 자물쇠
 
         public Listener(IPEndPoint endPoint, int backlog, Action<Socket, string> onMessageReceived)
         {
@@ -25,7 +25,7 @@ namespace Server
             listenSocket.Listen(backlog);
 
             onMessageReceivedEvent += onMessageReceived; // 콜백 구독
-            sendArgs = new SocketAsyncEventArgs();
+            sendArgs = new SocketAsyncEventArgs(); // 인자 객체 생성
         }
 
         public void Broadcast(string message)
