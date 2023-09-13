@@ -30,11 +30,13 @@ namespace Server
 
         public void Broadcast(string message)
         {
-            byte[] sendBytes = Encoding.UTF8.GetBytes(message); // 메세지 변환
-            sendArgs.SetBuffer(sendBytes); // 보낼 메세지 버퍼 세팅
-
             lock (clientSocketsLocker) // clientSockets 라킹
+            {
+                byte[] sendBytes = Encoding.UTF8.GetBytes(message); // 메세지 변환
+                sendArgs.SetBuffer(sendBytes); // 보낼 메세지 버퍼 세팅
+
                 clientSockets.ForEach(socket => socket.SendAsync(sendArgs)); // 모든 클라이언트들에게 메세지 전송
+            }
         }
 
         #region Accept
@@ -51,14 +53,16 @@ namespace Server
         {
             if(args.SocketError == SocketError.Success) // 소켓이 성공적으로 받아졌다면
             {
-                Socket clientSocket = args.AcceptSocket;
-                StartReceive(clientSocket); // 메세지 수신 시작
                 lock(clientSocketsLocker) // clientSockets 라킹
+                {
+                    Socket clientSocket = args.AcceptSocket;
+                    StartReceive(clientSocket); // 메세지 수신 시작
                     clientSockets.Add(clientSocket); // 소켓 리스트에 추가
 
-                // 디버깅
-                IPEndPoint clientSocketEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
-                Console.WriteLine($"클라이언트가 접속하였습니다. [{clientSocketEndPoint.Address}]");
+                    // 디버깅
+                    IPEndPoint clientSocketEndPoint = clientSocket.RemoteEndPoint as IPEndPoint;
+                    Console.WriteLine($"클라이언트가 접속하였습니다. [{clientSocketEndPoint.Address}]");
+                }
             }
             else // 소켓 받아들이기에 실패했다면
                 Console.WriteLine(args.SocketError); // 소켓에러 출력
@@ -79,17 +83,19 @@ namespace Server
         {
             try
             {
-                // 디버깅
-                IPEndPoint clientSocketEndPoint = socket.RemoteEndPoint as IPEndPoint;
-
-                // 소켓 내보내기
-                socket.Shutdown(SocketShutdown.Both);
-                socket.Close();
-
                 lock (clientSocketsLocker) // clientSockets 라킹
+                {
+                    // 디버깅
+                    IPEndPoint clientSocketEndPoint = socket.RemoteEndPoint as IPEndPoint;
+
+                    // 소켓 내보내기
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
+
                     clientSockets.Remove(socket); // clientSockets에서 내보낸 소켓 지우기
 
-                Console.WriteLine($"클라이언트가 접속 해제하였습니다. [{clientSocketEndPoint.Address}]");
+                    Console.WriteLine($"클라이언트가 접속 해제하였습니다. [{clientSocketEndPoint.Address}]");
+                }
             }
             catch { }
         }
