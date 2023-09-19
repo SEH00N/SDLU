@@ -1,10 +1,13 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Runtime.ExceptionServices;
 
 namespace H00N.Network
 {
     public abstract class Session
     {
+        public const int HeaderSize = sizeof(ushort);
+
         private Socket socket;
         private int active;
 
@@ -16,7 +19,7 @@ namespace H00N.Network
 
         public abstract void OnConnected(EndPoint endPoint);
         public abstract void OnDisconnected(EndPoint endPoint);
-        public abstract int OnReceived(ArraySegment<byte> buffers);
+        public abstract void OnPacketReceived(ArraySegment<byte> buffer);
         public abstract void OnSent(int length);
 
         public void Open(Socket socket)
@@ -120,7 +123,9 @@ namespace H00N.Network
                     return;
                 }
 
-                int processedLength = OnReceived(receiveBuffer.ReadBuffer);
+                ArraySegment<byte> buffer = receiveBuffer.ReadBuffer;
+
+                int processedLength = HandleBuffer(buffer);
                 if(processedLength < 0 || receiveBuffer.Size < processedLength)
                 {
                     Disconnect();
@@ -140,6 +145,29 @@ namespace H00N.Network
             {
                 Disconnect();
             }
+        }
+
+        private int HandleBuffer(ArraySegment<byte> buffer)
+        {
+            int processedLength = 0;
+
+            while(true)
+            {
+                if (buffer.Count < HeaderSize)
+                    break;
+
+                // [타입] [길이] [데이터...]
+                ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+                if (buffer.Count > dataSize)
+                    break;
+
+                OnPacketReceived(new ArraySegment<byte>(buffer.Array, buffer.Offset, dataSize));
+
+                processedLength += dataSize;
+                buffer = new ArraySegment<byte>(buffer.Array, buffer.Offset + dataSize, buffer.Count - dataSize);
+            }
+
+            return processedLength;
         }
         #endregion
     }
