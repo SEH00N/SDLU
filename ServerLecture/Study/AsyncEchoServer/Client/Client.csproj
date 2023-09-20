@@ -7,9 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\H00N.Network\H00N.Network.csproj" />
-    <ProjectReference Include="..\PacketUtility\PacketUtility.csproj" />
-  </ItemGroup>
-
 </Project>

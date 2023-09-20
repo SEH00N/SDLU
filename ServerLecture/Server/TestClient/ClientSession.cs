@@ -17,7 +17,8 @@ namespace TestClient
 
         public override void OnPacketReceived(ArraySegment<byte> buffer)
         {
-            
+            PacketManager.Instance.
+
         }
 
         public override void OnSent(int length)
