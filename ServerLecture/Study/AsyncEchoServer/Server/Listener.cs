@@ -29,11 +29,13 @@ namespace Server
 
         public void Broadcast(string message)
         {
-            byte[] sendBytes = Encoding.UTF8.GetBytes(message);
-            sendArgs.SetBuffer(sendBytes);
-
             lock(listLocker)
+            {
+                byte[] sendBytes = Encoding.UTF8.GetBytes(message);
+                sendArgs.SetBuffer(sendBytes);
+
                 clientSockets.ForEach(socket => socket.SendAsync(sendArgs));
+            }
         }
 
         public void Kick(Socket socket)
@@ -117,7 +119,7 @@ namespace Server
 
         private void Receive(Socket socket, SocketAsyncEventArgs args)
         {
-            ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[4], 0, 1024);
+            ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[1024], 0, 1024);
             args.SetBuffer(buffer.Array, buffer.Offset, buffer.Count);
 
             bool pending = socket.ReceiveAsync(args);
