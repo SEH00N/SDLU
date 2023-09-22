@@ -1,4 +1,4 @@
-﻿namespace PacketUtility
+﻿namespace Packets
 {
     public enum PacketID
     {

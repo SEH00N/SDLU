@@ -156,7 +156,7 @@ namespace H00N.Network
                 if (buffer.Count < HeaderSize)
                     break;
 
-                // [타입] [길이] [데이터...]
+                // [길이] [타입] [데이터...]
                 ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
                 if (buffer.Count > dataSize)
                     break;

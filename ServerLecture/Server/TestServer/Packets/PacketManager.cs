@@ -1,17 +1,17 @@
 ﻿using H00N.Network;
 using Packets;
-using System;
 
-namespace TestClient
+namespace TestServer
 {
     public class PacketManager
     {
-        private static PacketManager instance = null;
-        public static PacketManager Instance {
-            get {
+        private static PacketManager instance;
+        public static PacketManager Instance
+        {
+            get
+            {
                 if (instance == null)
                     instance = new PacketManager();
-
                 return instance;
             }
         }
@@ -19,7 +19,8 @@ namespace TestClient
         private Dictionary<ushort, Func<ArraySegment<byte>, Packet>> packetFactories = new Dictionary<ushort, Func<ArraySegment<byte>, Packet>>();
         private Dictionary<ushort, Action<Packet>> packetHandlers = new Dictionary<ushort, Action<Packet>>();
 
-        private PacketManager()
+
+        public PacketManager()
         {
             packetFactories.Clear();
             packetHandlers.Clear();
@@ -29,8 +30,8 @@ namespace TestClient
 
         private void RegisterHandler()
         {
-            packetFactories.Add((ushort)PacketID.S_ChatPacket, PacketUtility.CreatePacket<S_ChatPacket>);
-            packetHandlers.Add((ushort)PacketID.S_ChatPacket, PacketHandler.S_ChatPacketHandler);
+            packetFactories.Add((ushort)PacketID.C_ChatPacket, PacketUtility.CreatePacket<C_ChatPacket>);
+            packetHandlers.Add((ushort)PacketID.C_ChatPacket, PacketHandler.C_ChatPacket());
         }
 
         public void HandlePacket(ArraySegment<byte> buffer)

@@ -7,6 +7,7 @@ namespace H00N.Network
     public class Listener
     {
         private Socket listenSocket = null;
+        private Action<Socket> onAccepted;
 
         private bool active = false;
 
@@ -30,10 +31,11 @@ namespace H00N.Network
             return true;
         }
 
-        public void StartAccept()
+        public void StartAccept(Action<Socket> onAccepted)
         {
             SocketAsyncEventArgs acceptArgs = new SocketAsyncEventArgs();
             acceptArgs.Completed += OnAcceptCompleted;
+            this.onAccepted = onAccepted;
 
             Accept(acceptArgs);
         }
@@ -52,7 +54,7 @@ namespace H00N.Network
             if (args.SocketError == SocketError.Success)
             {
                 Socket clientSocket = args.AcceptSocket;
-                
+                onAccepted?.Invoke(clientSocket);
                 // Create Session
             }
 

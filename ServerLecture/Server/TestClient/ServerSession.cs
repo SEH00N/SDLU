@@ -3,27 +3,26 @@ using System.Net;
 
 namespace TestClient
 {
-    public class ClientSession : Session
+    public class ServerSession : Session
     {
         public override void OnConnected(EndPoint endPoint)
         {
-            Console.WriteLine($"[Session] Client Connected : {endPoint}");
+            Console.WriteLine($"[Session] Connected with Server");
         }
 
         public override void OnDisconnected(EndPoint endPoint)
         {
-            Console.WriteLine($"[Session] Client Disconnected : {endPoint}");
+            Console.WriteLine($"[Session] Disconnected with Server");
         }
 
         public override void OnPacketReceived(ArraySegment<byte> buffer)
         {
-            PacketManager.Instance.
-
+            PacketManager.Instance.HandlePacket(buffer);
         }
 
         public override void OnSent(int length)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"[Session] {length} of Data Sent");
         }
     }
 }
