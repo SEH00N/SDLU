@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using System.Runtime.ExceptionServices;
 
 namespace H00N.Network
 {
@@ -9,7 +8,9 @@ namespace H00N.Network
         public const int HeaderSize = sizeof(ushort);
 
         private Socket socket;
-        private int active;
+
+        private int active = 0;
+        public int Active => active;
 
         private SharedBuffer receiveBuffer = new SharedBuffer(4096);
         private Queue<ArraySegment<byte>> sendQueue = new Queue<ArraySegment<byte>>();
@@ -24,7 +25,7 @@ namespace H00N.Network
 
         public void Open(Socket socket)
         {
-            if (active == 1)
+            if (Interlocked.Exchange(ref active, 1) == 1)
                 return;
 
             this.socket = socket;
@@ -54,7 +55,6 @@ namespace H00N.Network
         public void Send(ArraySegment<byte> sendBuffer)
         {
             sendQueue.Enqueue(sendBuffer);
-
             if (pendingList.Count == 0)
                 FlushSendQueue();
         }
@@ -117,6 +117,7 @@ namespace H00N.Network
             if(args.SocketError == SocketError.Success && args.BytesTransferred > 0)
             {
                 bool result = receiveBuffer.ShiftWriteCursor(args.BytesTransferred);
+
                 if(result == false)
                 {
                     Disconnect();

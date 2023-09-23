@@ -8,8 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\H00N.Network\H00N.Network.csproj" />
     <ProjectReference Include="..\PacketUtility\Packets.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="H00N.Network">
+      <HintPath>..\H00N.Network\bin\Debug\net6.0\H00N.Network.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -8,6 +8,7 @@ namespace TestClient
         public override void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"[Session] Connected with Server");
+            Program.Chatting();
         }
 
         public override void OnDisconnected(EndPoint endPoint)
@@ -17,7 +18,8 @@ namespace TestClient
 
         public override void OnPacketReceived(ArraySegment<byte> buffer)
         {
-            PacketManager.Instance.HandlePacket(buffer);
+            Console.WriteLine($"[Session] {buffer.Count} of Data Received");
+            PacketManager.Instance.HandlePacket(this, buffer);
         }
 
         public override void OnSent(int length)

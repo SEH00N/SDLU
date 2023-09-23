@@ -25,6 +25,8 @@ namespace H00N.Network
             ushort process = 0;
 
             ushort stringLength = BitConverter.ToUInt16(buffer.Array, buffer.Offset + offset + process);
+            stringLength -= 2;
+
             process += sizeof(ushort);
 
             result = Encoding.Unicode.GetString(buffer.Array, buffer.Offset + offset + process, stringLength);
@@ -33,27 +35,27 @@ namespace H00N.Network
             return process;
         }
 
-        public static ushort AppendIntData(int data, byte[] buffer, int offset)
+        public static ushort AppendIntData(int data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(int);
-            Buffer.BlockCopy(BitConverter.GetBytes(data), 0, buffer, offset, length);
+            Buffer.BlockCopy(BitConverter.GetBytes(data), 0, buffer.Array, buffer.Offset + offset, length);
 
             return length;
         }
 
-        public static ushort AppendUShortData(ushort data, byte[] buffer, int offset)
+        public static ushort AppendUShortData(ushort data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(ushort);
-            Buffer.BlockCopy(BitConverter.GetBytes(data), 0, buffer, offset, length);
+            Buffer.BlockCopy(BitConverter.GetBytes(data), 0, buffer.Array, buffer.Offset + offset, length);
 
             return length;
         }
 
-        public static ushort AppendStringData(string data, byte[] buffer, int offset)
+        public static ushort AppendStringData(string data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(ushort); // 길이를 알려줄 공간 확보
-            length += (ushort)Encoding.Unicode.GetBytes(data, 0, data.Length, buffer, offset + length);
-            Buffer.BlockCopy(BitConverter.GetBytes(length), 0, buffer, offset, sizeof(ushort));
+            length += (ushort)Encoding.Unicode.GetBytes(data, 0, data.Length, buffer.Array, buffer.Offset + offset + length);
+            Buffer.BlockCopy(BitConverter.GetBytes(length), 0, buffer.Array, buffer.Offset + offset, sizeof(ushort));
 
             return length;
         }

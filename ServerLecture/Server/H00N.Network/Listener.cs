@@ -55,7 +55,6 @@ namespace H00N.Network
             {
                 Socket clientSocket = args.AcceptSocket;
                 onAccepted?.Invoke(clientSocket);
-                // Create Session
             }
 
             Accept(args);

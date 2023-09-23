@@ -6,18 +6,26 @@ namespace TestServer
 {
     internal class Program
     {
-        static Listener listener;
+        public static Listener Listener;
+        public static ChatRoom Room;
 
         static void Main(string[] args)
         {
+            Room = new ChatRoom();
+
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
-            IPAddress ipAddress = ipHost.AddressList[0];
+            IPAddress ipAddress = ipHost.AddressList[1];
             IPEndPoint endPoint = new IPEndPoint(ipAddress, 8081);
 
-            listener = new Listener(endPoint);
-            if (listener.Listen(10))
-                listener.StartAccept(OnAccepted);
+            Listener = new Listener(endPoint);
+            if (Listener.Listen(10))
+                Listener.StartAccept(OnAccepted);
+
+            while(true)
+            {
+
+            }
         }
 
         private static void OnAccepted(Socket socket)

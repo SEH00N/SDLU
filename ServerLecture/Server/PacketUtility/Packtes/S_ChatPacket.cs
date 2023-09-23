@@ -1,9 +1,4 @@
 ﻿using H00N.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Packets
 {
@@ -32,9 +27,10 @@ namespace Packets
             ushort process = 0;
             process += sizeof(ushort); // 패킷의 사이즈를 넣을 공간 미리 확보
 
-            process += PacketUtility.AppendStringData(this.sender, buffer.Array, buffer.Offset + process);
-            process += PacketUtility.AppendStringData(this.message, buffer.Array, buffer.Offset + process);
-            PacketUtility.AppendUShortData(process, buffer.Array, buffer.Offset); // 아까 확보해둔 그 공간에 사이즈 할당
+            process += PacketUtility.AppendUShortData(this.ID, buffer, process); // ID 할당
+            process += PacketUtility.AppendStringData(this.sender, buffer, process);
+            process += PacketUtility.AppendStringData(this.message, buffer, process);
+            PacketUtility.AppendUShortData(process, buffer, 0); // 아까 확보해둔 그 공간에 사이즈 할당
 
             return UniqueBuffer.Close(process);
         }

@@ -1,17 +1,18 @@
 ﻿using H00N.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace TestServer
 {
     public class ClientSession : Session
     {
-
+        public ChatRoom Room;
+        public EndPoint EndPoint;
 
         public override void OnConnected(EndPoint endPoint)
         {
+            EndPoint = endPoint;
+            Program.Room.Enter(this, endPoint);
+
             Console.WriteLine($"[Session] Client Connected : {endPoint}");
         }
 
@@ -22,7 +23,8 @@ namespace TestServer
 
         public override void OnPacketReceived(ArraySegment<byte> buffer)
         {
-            PacketManager.Instance.HandlePacket(buffer);
+            Console.WriteLine($"[Session] {buffer.Count} of Data Received");
+            PacketManager.Instance.HandlePacket(this, buffer);
         }
 
         public override void OnSent(int length)

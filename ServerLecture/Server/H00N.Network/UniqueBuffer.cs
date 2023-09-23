@@ -29,9 +29,12 @@
         public static ArraySegment<byte> Close(int usedSize)
         {
             Buffer.ShiftWriteCursor(usedSize);
+
+            ArraySegment<byte> register = Buffer.ReadBuffer;
+            ArraySegment<byte> buffer = new ArraySegment<byte>(register.Array, register.Offset, usedSize);
             Buffer.ShiftReadCursor(usedSize);
 
-            return Buffer.ReadBuffer;
+            return buffer;
         }
     }
 }

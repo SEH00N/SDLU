@@ -17,7 +17,7 @@ namespace TestServer
         }
 
         private Dictionary<ushort, Func<ArraySegment<byte>, Packet>> packetFactories = new Dictionary<ushort, Func<ArraySegment<byte>, Packet>>();
-        private Dictionary<ushort, Action<Packet>> packetHandlers = new Dictionary<ushort, Action<Packet>>();
+        private Dictionary<ushort, Action<Session, Packet>> packetHandlers = new Dictionary<ushort, Action<Session, Packet>>();
 
 
         public PacketManager()
@@ -31,10 +31,10 @@ namespace TestServer
         private void RegisterHandler()
         {
             packetFactories.Add((ushort)PacketID.C_ChatPacket, PacketUtility.CreatePacket<C_ChatPacket>);
-            packetHandlers.Add((ushort)PacketID.C_ChatPacket, PacketHandler.C_ChatPacket());
+            packetHandlers.Add((ushort)PacketID.C_ChatPacket, PacketHandler.C_ChatPacket);
         }
 
-        public void HandlePacket(ArraySegment<byte> buffer)
+        public void HandlePacket(Session session, ArraySegment<byte> buffer)
         {
             ushort packetID = PacketUtility.ReadPacketID(buffer);
 
@@ -42,7 +42,7 @@ namespace TestServer
             {
                 Packet packet = packetFactories[packetID]?.Invoke(buffer);
                 if (packetHandlers.ContainsKey(packetID))
-                    packetHandlers[packetID]?.Invoke(packet);
+                    packetHandlers[packetID]?.Invoke(session, packet);
             }
         }
     }

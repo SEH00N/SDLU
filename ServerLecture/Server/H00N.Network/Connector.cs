@@ -42,8 +42,9 @@ namespace H00N.Network
         {
             if(args.SocketError == SocketError.Success)
             {
-                session.Open(args.AcceptSocket);
-                session.OnConnected(args.RemoteEndPoint);
+                Socket socket = args.ConnectSocket;
+                session.Open(socket);
+                session.OnConnected(socket.RemoteEndPoint);
             }
         }
     }
