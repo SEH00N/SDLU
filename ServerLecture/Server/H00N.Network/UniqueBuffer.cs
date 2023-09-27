@@ -21,7 +21,7 @@
                 Buffer = new SharedBuffer(ChunkSize);
 
             if (reserveSize > Buffer.Capacity)
-                Buffer = new SharedBuffer(ChunkSize);
+                Buffer.PurifyBuffer();
 
             return Buffer.WriteBuffer;
         }
@@ -30,8 +30,7 @@
         {
             Buffer.ShiftWriteCursor(usedSize);
 
-            ArraySegment<byte> register = Buffer.ReadBuffer;
-            ArraySegment<byte> buffer = new ArraySegment<byte>(register.Array, register.Offset, usedSize);
+            ArraySegment<byte> buffer = Buffer.ReadBuffer;
             Buffer.ShiftReadCursor(usedSize);
 
             return buffer;
