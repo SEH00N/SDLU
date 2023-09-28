@@ -11,7 +11,7 @@ namespace TestServer
         public override void OnConnected(EndPoint endPoint)
         {
             EndPoint = endPoint;
-            Program.Room.Enter(this, endPoint);
+            Program.Room.Push(() => Program.Room.Enter(this, endPoint));
 
             Console.WriteLine($"[Session] Client Connected : {endPoint}");
         }

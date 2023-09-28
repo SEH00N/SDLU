@@ -1,5 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Threading;
+using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace H00N.Network
 {
@@ -22,6 +25,8 @@ namespace H00N.Network
         public abstract void OnDisconnected(EndPoint endPoint);
         public abstract void OnPacketReceived(ArraySegment<byte> buffer);
         public abstract void OnSent(int length);
+
+        private object locker = new object();
 
         public void Open(Socket socket)
         {
@@ -54,15 +59,21 @@ namespace H00N.Network
 
         public void Send(ArraySegment<byte> sendBuffer)
         {
-            sendQueue.Enqueue(sendBuffer);
-            if (pendingList.Count == 0)
-                FlushSendQueue();
+            lock(locker)
+            {
+                sendQueue.Enqueue(sendBuffer);
+                if (pendingList.Count == 0)
+                    FlushSendQueue();
+            }
         }
 
         private void Release()
         {
-            sendQueue.Clear();
-            pendingList.Clear();
+            lock (locker)
+            {
+                sendQueue.Clear();
+                pendingList.Clear();
+            }
         }
 
         #region Send
@@ -71,7 +82,7 @@ namespace H00N.Network
             if (active == 0)
                 return;
 
-            while(sendQueue.Count > 0)
+            while (sendQueue.Count > 0)
             {
                 ArraySegment<byte> buffer = sendQueue.Dequeue();
                 pendingList.Add(buffer);
@@ -86,18 +97,21 @@ namespace H00N.Network
 
         private void OnSendCompleted(object sender, SocketAsyncEventArgs args)
         {
-            if (args.SocketError == SocketError.Success && args.BytesTransferred > 0)
+            lock (locker)
             {
-                sendArgs.BufferList = null;
-                pendingList.Clear();
+                if (args.SocketError == SocketError.Success && args.BytesTransferred > 0)
+                {
+                    sendArgs.BufferList = null;
+                    pendingList.Clear();
 
-                OnSent(args.BytesTransferred);
+                    OnSent(args.BytesTransferred);
 
-                if (sendQueue.Count > 0)
-                    FlushSendQueue();
+                    if (sendQueue.Count > 0)
+                        FlushSendQueue();
+                }
+                else
+                    Disconnect();
             }
-            else
-                Disconnect();
         }
         #endregion
 

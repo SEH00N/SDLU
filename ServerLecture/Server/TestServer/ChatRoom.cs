@@ -3,18 +3,32 @@ using Microsoft.VisualBasic;
 using Packets;
 using System;
 using System.Net;
+using System.Net.Sockets;
 
 namespace TestServer
 {
     public class ChatRoom
     {
         private List<ClientSession> sessions = new List<ClientSession>();
+        private Queue<ArraySegment<byte>> packetQueue = new Queue<ArraySegment<byte>>();
+
+        private JobQueue jobQueue = new JobQueue();
+
+        public void Push(Action item) => jobQueue.Push(item);
+
+        public void Flush()
+        {
+            while(packetQueue.Count > 0)
+            {
+                ArraySegment<byte> buffer = packetQueue.Dequeue();
+                foreach (ClientSession session in sessions)
+                    session.Send(buffer);
+            }
+        }
 
         public void Broadcast(Packet packet)
         {
-            ArraySegment<byte> buffer = packet.Serialize();
-            foreach (ClientSession session in sessions)
-                session.Send(buffer);
+            packetQueue.Enqueue(packet.Serialize());
         }
 
         public void Enter(ClientSession session, EndPoint endPoint)
@@ -25,7 +39,7 @@ namespace TestServer
             S_EnterPacket enterPacket = new S_EnterPacket();
             enterPacket.sender = endPoint.ToString();
 
-            //Broadcast(enterPacket);
+            Broadcast(enterPacket);
         }
 
         public void Leave(ClientSession session)

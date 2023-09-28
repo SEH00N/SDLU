@@ -1,4 +1,7 @@
-﻿namespace H00N.Network
+﻿using System;
+using System.Threading;
+
+namespace H00N.Network
 {
     public class UniqueBuffer
     {

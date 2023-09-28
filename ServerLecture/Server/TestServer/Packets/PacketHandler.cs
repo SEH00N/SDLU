@@ -15,7 +15,8 @@ namespace TestServer
             sendPacket.sender = clientSession.EndPoint.ToString();
             sendPacket.message = chatPacket.message;
 
-            clientSession.Room.Broadcast(sendPacket);
+            ChatRoom room = clientSession.Room;
+            room.Push(() => room.Broadcast(sendPacket));
         }
     }
 }

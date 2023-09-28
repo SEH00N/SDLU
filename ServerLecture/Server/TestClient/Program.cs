@@ -11,7 +11,7 @@ namespace TestClient
 
         static void Main(string[] args)
         {
-            IPAddress ipAddress = IPAddress.Parse("192.168.0.13");
+            IPAddress ipAddress = IPAddress.Parse("192.168.0.14");
             IPEndPoint endPoint = new IPEndPoint(ipAddress, 8081);
 
             serverSession = new ServerSession();

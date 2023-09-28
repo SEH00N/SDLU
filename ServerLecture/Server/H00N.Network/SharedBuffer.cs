@@ -1,4 +1,6 @@
-﻿namespace H00N.Network
+﻿using System;
+
+namespace H00N.Network
 {
     public class SharedBuffer
     {
