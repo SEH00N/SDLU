@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace H00N.Network
 {
     public class JobQueue : IFlushable<Action>
