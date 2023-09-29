@@ -1,5 +1,4 @@
 ﻿using H00N.Network;
-using Microsoft.VisualBasic;
 using Packets;
 using System;
 using System.Net;
