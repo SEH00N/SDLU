@@ -13,8 +13,8 @@ namespace Packets
         {
             ushort process = 0;
 
-            process += sizeof(ushort); // 패킷 사이즈
-            process += sizeof(ushort); // 패킷 아이디
+            process += sizeof(ushort);
+            process += sizeof(ushort);
 
             process += PacketUtility.TranslateString(buffer, process, out this.sender);
             process += PacketUtility.TranslateString(buffer, process, out this.message);
@@ -25,12 +25,12 @@ namespace Packets
             ArraySegment<byte> buffer = UniqueBuffer.Open(1024);
 
             ushort process = 0;
-            process += sizeof(ushort); // 패킷의 사이즈를 넣을 공간 미리 확보
+            process += sizeof(ushort);
 
-            process += PacketUtility.AppendUShortData(this.ID, buffer, process); // ID 할당
+            process += PacketUtility.AppendUShortData(this.ID, buffer, process);
             process += PacketUtility.AppendStringData(this.sender, buffer, process);
             process += PacketUtility.AppendStringData(this.message, buffer, process);
-            PacketUtility.AppendUShortData(process, buffer, 0); // 아까 확보해둔 그 공간에 사이즈 할당
+            PacketUtility.AppendUShortData(process, buffer, 0);
 
             return UniqueBuffer.Close(process);
         }

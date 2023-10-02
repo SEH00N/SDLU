@@ -2,9 +2,9 @@
 {
     public enum PacketID
     {
-        C_ChatPacket,
-        S_ChatPacket,
-        S_EnterPacket,
-        S_LeavePacket,
+        C_ChatPacket, // Client가 보내는 ChatPacket
+        S_ChatPacket, // Server가 보내는 ChatPacket
+        S_EnterPacket, // Server가 보내는 EnterPacket
+        S_LeavePacket, // Server가 보내는 LeavePacket
     }
 }
