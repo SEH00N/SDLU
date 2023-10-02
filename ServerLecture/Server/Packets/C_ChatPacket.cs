@@ -6,9 +6,9 @@ namespace Packets
     {
         public override ushort ID => (ushort)PacketID.C_ChatPacket; // 패킷 아이디
 
-        public string message;
+        public string message; // 보낸 메세지
 
-        public override void Deserialize(ArraySegment<byte> buffer)
+        public override void Deserialize(ArraySegment<byte> buffer) // 역직렬화
         {
             ushort process = 0; // 처리한 길이
 
@@ -18,12 +18,12 @@ namespace Packets
             process += PacketUtility.TranslateString(buffer, process, out this.message); // message 삽입
         }
 
-        public override ArraySegment<byte> Serialize()
+        public override ArraySegment<byte> Serialize() // 직렬화
         {
             ArraySegment<byte> buffer = UniqueBuffer.Open(1024); // 1024만큼 버퍼 발급
 
             ushort process = 0; // 처리한 길이
-            process += sizeof(ushort); // 패킷의 사이즈를 넣을 공간 미리 확보
+            process += sizeof(ushort); // 패킷 사이즈 넣을 공간 확보
 
             process += PacketUtility.AppendUShortData(this.ID, buffer, process); // ID 삽입
             process += PacketUtility.AppendStringData(this.message, buffer, process); // message 삽입
