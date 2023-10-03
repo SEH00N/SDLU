@@ -16,7 +16,10 @@ namespace H00N.Network
         public static ArraySegment<byte> Open(int reserveSize) // 버퍼 발급
         {
             if (reserveSize > ChunkSize) // 제공받고자 하는 사이즈가 전체 버퍼의 사이즈보다 크면 (문제 발생)
+            {
+                Buffer = null;
                 return null; // null 반환
+            }
 
             if (Buffer == null) // 버퍼가 비어있다면
                 Buffer = new SharedBuffer(ChunkSize); // 버퍼 새로 생성

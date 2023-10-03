@@ -35,6 +35,9 @@ namespace H00N.Network
 
         public void StartAccept(Action<Socket> onAccepted) // 연결 루프를 시작하는 함수
         {
+            if (active == false)
+                return;
+
             SocketAsyncEventArgs acceptArgs = new SocketAsyncEventArgs(); // 인자 생성
             acceptArgs.Completed += OnAcceptCompleted; // 연결 후 실행될 콜백 구독
             this.onAccepted = onAccepted; // 연결 후 실행될 콜백 할당

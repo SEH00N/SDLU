@@ -21,12 +21,12 @@ namespace H00N.Network
 
         private SocketAsyncEventArgs sendArgs = new SocketAsyncEventArgs(); // 비동기 송신용 인자
 
+        private object locker = new object(); // 수신 데이터 락커
+
         public abstract void OnConnected(EndPoint endPoint); // 연결되었을 때 호출되는 함수
         public abstract void OnDisconnected(EndPoint endPoint); // 연결 해제되었을 때 호출되는 함수
         public abstract void OnPacketReceived(ArraySegment<byte> buffer); // 패킷이 읽어들여졌을 때 호출되는 함수
         public abstract void OnSent(int length); // 데이터를 전송헀을 때 호출되는 함수
-
-        private object locker = new object(); // 수신 데이터 락커
 
         public void Open(Socket socket) // 세션을 여는 함수
         {
@@ -42,7 +42,7 @@ namespace H00N.Network
             Receive(receiveArgs); // 데이터 수신 루프 시작
         }
 
-        public void Disconnect() // 연결 해제
+        public void Close() // 연결 해제
         {
             if (Interlocked.Exchange(ref active, 0) == 0) // active를 0로 변환, 이미 active가 0이라면 return
                 return;
@@ -110,7 +110,7 @@ namespace H00N.Network
                         FlushSendQueue(); // 다시 sendQueue Flsuh
                 }
                 else
-                    Disconnect(); // 문제가 생겼다면 접속 해제
+                    Close(); // 문제가 생겼다면 접속 해제
             }
         }
         #endregion
@@ -134,7 +134,7 @@ namespace H00N.Network
 
                 if(result == false) // WriteCursor 업데이트 중 문제가 생겼다면
                 {
-                    Disconnect(); // 연결 해제
+                    Close(); // 연결 해제
                     return; // return
                 }
 
@@ -143,14 +143,14 @@ namespace H00N.Network
                 int processedLength = HandleBuffer(buffer); // 버퍼 핸들링
                 if(processedLength < 0 || receiveBuffer.Size < processedLength) // 핸들링 도중 문제가 생겼다면
                 {
-                    Disconnect(); // 연결 해제
+                    Close(); // 연결 해제
                     return; // return
                 }
 
                 result = receiveBuffer.ShiftReadCursor(processedLength); // 핸들링 된 만큼만 ReadCursor 업데이트
                 if(result == false) // ReadCursor 업데이트 중 문제가 생겼다면
                 {
-                    Disconnect(); // 연결 해제
+                    Close(); // 연결 해제
                     return; // return
                 }
 
@@ -158,7 +158,7 @@ namespace H00N.Network
             }
             else
             {
-                Disconnect(); // 문제가 생겼다면 연결 해제
+                Close(); // 문제가 생겼다면 연결 해제
             }
         }
 
@@ -173,7 +173,7 @@ namespace H00N.Network
 
                 // [길이] [타입] [데이터...]
                 ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset); // 데이터 사이즈 추출
-                if (buffer.Count > dataSize) // 데이터의 사이즈보다 버퍼의 크기가 작다면 (데이터가 모두 수신되지 않았다는 뜻)
+                if (buffer.Count < dataSize) // 데이터의 사이즈보다 버퍼의 크기가 작다면 (데이터가 모두 수신되지 않았다는 뜻)
                     break; // 루프 끝내기
 
                 // 여기까지 왔다면 정상적인 패킷이 존재한다는 뜻
