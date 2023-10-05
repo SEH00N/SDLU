@@ -12,17 +12,23 @@ namespace Server
         private List<ClientSession> players = new List<ClientSession>();
         public List<ClientSession> Players => players;
 
-        public void Enter(ClientSession session, ushort id)
+        private JobQueue jobQueue = new JobQueue();
+
+        public void Enter(ClientSession session)
         {
-            session.ID = id;
             players.Add(session);
             session.Room = this;
         }
 
-        public void Broadcast(Packet packet, Session except)
+        public void Push(Action action)
+        {
+            jobQueue.Push(action);
+        }
+
+        public void Broadcast(Packet packet, ClientSession except)
         {
             players.ForEach(player => {
-                if (player == except)
+                if (player.ID == except.ID)
                     return;
 
                 player.Send(packet.Serialize());

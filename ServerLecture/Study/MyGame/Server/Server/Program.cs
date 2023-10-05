@@ -21,6 +21,8 @@ namespace Server
             listener = new Listener(endPoint);
             if (listener.Listen(10))
                 listener.StartAccept(OnAccepted);
+
+            while(true) {}
         }
 
         private static void OnAccepted(Socket socket)

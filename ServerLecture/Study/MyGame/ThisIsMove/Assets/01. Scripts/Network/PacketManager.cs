@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using H00N.Network;
 using Packets;
+using UnityEngine;
 
 public class PacketManager
 {
@@ -31,6 +32,9 @@ public class PacketManager
     {
         packetFactories.Add((ushort)PacketID.S_PlayerJoinPacket, PacketUtility.CreatePacket<S_PlayerJoinPacket>);
         packetHandlers.Add((ushort)PacketID.S_PlayerJoinPacket, PacketHandler.S_PlayerJoinPacket);
+        
+        packetFactories.Add((ushort)PacketID.S_RoomEnterResponsePacket, PacketUtility.CreatePacket<S_RoomEnterResponsePacket>);
+        packetHandlers.Add((ushort)PacketID.S_RoomEnterResponsePacket, PacketHandler.S_RoomEnterResponsePacket);
 
         packetFactories.Add((ushort)PacketID.S_MovePacket, PacketUtility.CreatePacket<S_MovePacket>);
         packetHandlers.Add((ushort)PacketID.S_MovePacket, PacketHandler.S_MovePacket);
