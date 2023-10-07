@@ -85,20 +85,14 @@ namespace H00N.Network
             while (sendQueue.Count > 0) // sendQueue가 빌 때까지
             {
                 ArraySegment<byte> buffer = sendQueue.Dequeue(); // 패킷 pop
-                if (buffer == null || buffer.Array == null)
-                    continue;
-
                 pendingList.Add(buffer); // pendingList(예약 리스트)에 추가
             }
 
-            if(pendingList.Count > 0)
-            {
-                sendArgs.BufferList = pendingList; // 송신 인자에 버퍼들 세팅
+            sendArgs.BufferList = pendingList; // 송신 인자에 버퍼들 세팅
 
-                bool pending = socket.SendAsync(sendArgs); // 비동기 전송
-                if (pending == false) // 만약 동기적으로 처리되었다면
-                    OnSendCompleted(null, sendArgs); // 직접 콜백 실행
-            }
+            bool pending = socket.SendAsync(sendArgs); // 비동기 전송
+            if (pending == false) // 만약 동기적으로 처리되었다면
+                OnSendCompleted(null, sendArgs); // 직접 콜백 실행
         }
 
         private void OnSendCompleted(object sender, SocketAsyncEventArgs args) // 송신 완료 콜백
