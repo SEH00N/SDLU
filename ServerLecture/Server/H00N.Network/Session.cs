@@ -15,7 +15,7 @@ namespace H00N.Network
         private int active = 0; // 연결 여부
         public int Active => active; // 연결 여부
 
-        private SharedBuffer receiveBuffer = new SharedBuffer(4096); // 수신용 버퍼
+        private SharedBuffer receiveBuffer = new SharedBuffer(65536); // 수신용 버퍼
         private Queue<ArraySegment<byte>> sendQueue = new Queue<ArraySegment<byte>>(); // 보낼 패킷을 저장할 Queue
         private List<ArraySegment<byte>> pendingList = new List<ArraySegment<byte>>(); // 세팅할 버퍼 컨테이너
 
@@ -85,14 +85,20 @@ namespace H00N.Network
             while (sendQueue.Count > 0) // sendQueue가 빌 때까지
             {
                 ArraySegment<byte> buffer = sendQueue.Dequeue(); // 패킷 pop
+                if (buffer == null || buffer.Array == null)
+                    continue;
+
                 pendingList.Add(buffer); // pendingList(예약 리스트)에 추가
             }
 
-            sendArgs.BufferList = pendingList; // 송신 인자에 버퍼들 세팅
+            if(pendingList.Count > 0)
+            {
+                sendArgs.BufferList = pendingList; // 송신 인자에 버퍼들 세팅
 
-            bool pending = socket.SendAsync(sendArgs); // 비동기 전송
-            if (pending == false) // 만약 동기적으로 처리되었다면
-                OnSendCompleted(null, sendArgs); // 직접 콜백 실행
+                bool pending = socket.SendAsync(sendArgs); // 비동기 전송
+                if (pending == false) // 만약 동기적으로 처리되었다면
+                    OnSendCompleted(null, sendArgs); // 직접 콜백 실행
+            }
         }
 
         private void OnSendCompleted(object sender, SocketAsyncEventArgs args) // 송신 완료 콜백
@@ -118,6 +124,8 @@ namespace H00N.Network
         #region Receive
         private void Receive(SocketAsyncEventArgs args) // 데이터 수신 함수
         {
+            receiveBuffer.PurifyBuffer();
+
             ArraySegment<byte> buffer = receiveBuffer.WriteBuffer; // 데이터를 받을 버퍼 발급
             args.SetBuffer(buffer.Array, buffer.Offset, buffer.Count); // 수신 인자에 버퍼 세팅
 

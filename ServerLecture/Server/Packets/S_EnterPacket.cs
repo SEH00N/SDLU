@@ -16,7 +16,7 @@ namespace Packets
             process += sizeof(ushort); // 패킷 사이즈
             process += sizeof(ushort); // 패킷 아이디
 
-            process += PacketUtility.TranslateString(buffer, process, out this.sender); // sender 삽입
+            process += PacketUtility.ReadStringData(buffer, process, out this.sender); // sender 삽입
         }
 
         public override ArraySegment<byte> Serialize()
