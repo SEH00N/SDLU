@@ -12,7 +12,7 @@ namespace Server
 
         static void Main(string[] args)
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.0.13"), 8081);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("172.31.1.175"), 8081);
 
             Listener listener = new Listener(endPoint);
             if (listener.Listen(10))
