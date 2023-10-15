@@ -11,7 +11,7 @@ namespace TestClient
 
         static void Main(string[] args)
         {
-            IPAddress ipAddress = IPAddress.Parse("192.168.0.13"); // 접속할 IP
+            IPAddress ipAddress = IPAddress.Parse("172.31.1.175"); // 접속할 IP
             IPEndPoint endPoint = new IPEndPoint(ipAddress, 8081); // 연결할 소켓의 종단점
 
             serverSession = new ServerSession(); // 서버와 통신할 세션 생성

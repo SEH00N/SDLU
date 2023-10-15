@@ -9,7 +9,7 @@ namespace TestServer
         {
             C_ChatPacket chatPacket = packet as C_ChatPacket; // packet 캐스팅
             ClientSession clientSession = session as ClientSession; // session 캐스팅
-            Console.WriteLine($"{clientSession.EndPoint} : {chatPacket.message}"); // message 출력
+            //Console.WriteLine($"{clientSession.EndPoint} : {chatPacket.message}"); // message 출력
 
             S_ChatPacket sendPacket = new S_ChatPacket(); // Client에게 보낼 패킷 생성
             sendPacket.sender = clientSession.EndPoint.ToString(); // 보낸사람 할당

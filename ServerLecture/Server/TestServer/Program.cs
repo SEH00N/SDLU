@@ -18,9 +18,9 @@ namespace TestServer
             JobQueue = new JobQueue(); // 잡큐 생성
 
             // 종단점 생성
-            string host = Dns.GetHostName();
-            IPHostEntry ipHost = Dns.GetHostEntry(host);
-            IPAddress ipAddress = ipHost.AddressList[1];
+            //string host = Dns.GetHostName();
+            //IPHostEntry ipHost = Dns.GetHostEntry(host);
+            IPAddress ipAddress = IPAddress.Parse("172.31.1.175");
             IPEndPoint endPoint = new IPEndPoint(ipAddress, 8081);
 
             Listener = new Listener(endPoint); // 리스너 생성
