@@ -4,6 +4,9 @@ using System.Net;
 
 namespace H00N.Network
 {
+    /// <summary>
+    /// 클라와 연결하는 서버 측 연결용 클래스
+    /// </summary>
     public class Listener
     {
         private Socket listenSocket = null; // 리슨소켓

@@ -4,6 +4,9 @@ using System.Net.Sockets;
 
 namespace H00N.Network
 {
+    /// <summary>
+    /// 서버와 연결하는 클라 측 연결용 클래스
+    /// </summary>
     public class Connector
     {
         private Socket socket; // 서버 소켓과 통신할 소켓

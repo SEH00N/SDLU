@@ -2,6 +2,11 @@
 
 namespace H00N.Network
 {
+    /// <summary>
+    /// 실제로 통신에 사용되는 패킷<br/>
+    /// <br/>
+    /// [PacketSize][PacketID][data...] 의 형태를 가짐
+    /// </summary>
     public abstract class Packet
     {
         public abstract ushort ID { get; } // 패킷 아이디

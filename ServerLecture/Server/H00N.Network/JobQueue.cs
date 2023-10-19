@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace H00N.Network
 {
+    /// <summary>
+    /// 작업을 모아두고 한 번에 플러시 시킬 수 있는 Queue 형태의 자료구조
+    /// </summary>
     public class JobQueue : IFlushable<Action>
     {
         private Queue<Action> jobQueue = new Queue<Action>(); // 작업을 저장해둘 큐
