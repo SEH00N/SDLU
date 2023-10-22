@@ -84,24 +84,53 @@ namespace H00N.Network
             return sizeof(int);
         }
 
+        /// <summary>
+        /// buffer의 offset부터 ushort 데이터를 읽어들이는 함수
+        /// </summary>
+        /// <param name="buffer">직렬화 된 패킷(버퍼)</param>
+        /// <param name="offset">읽어들이기 시작할 버퍼의 오프셋</param>
+        /// <param name="result">읽어들인 ushort</param>
+        /// <returns>처리한 바이트 개수</returns>
         public static ushort ReadUShortData(ArraySegment<byte> buffer, int offset, out ushort result)
         {
             result = BitConverter.ToUInt16(buffer.Array, buffer.Offset + offset);
             return sizeof(ushort);
         }
 
+        /// <summary>
+        /// buffer의 offset부터 short 데이터를 읽어들이는 함수
+        /// </summary>
+        /// <param name="buffer">직렬화 된 패킷(버퍼)</param>
+        /// <param name="offset">읽어들이기 시작할 버퍼의 오프셋</param>
+        /// <param name="result">읽어들인 short</param>
+        /// <returns>처리한 바이트 개수</returns>
         public static ushort ReadShortData(ArraySegment<byte> buffer, int offset, out short result)
         {
             result = BitConverter.ToInt16(buffer.Array, buffer.Offset + offset);
             return sizeof(short);
         }
 
+        /// <summary>
+        /// buffer의 offset부터 float 데이터를 읽어들이는 함수
+        /// </summary>
+        /// <param name="buffer">직렬화 된 패킷(버퍼)</param>
+        /// <param name="offset">읽어들이기 시작할 버퍼의 오프셋</param>
+        /// <param name="result">읽어들인 float</param>
+        /// <returns>처리한 바이트 개수</returns>
         public static ushort ReadFloatData(ArraySegment<byte> buffer, int offset, out float result)
         {
             result = BitConverter.ToSingle(buffer.Array, buffer.Offset + offset);
             return sizeof(float);
         }
 
+        /// <summary>
+        /// buffer의 offset부터 string 데이터를 읽어들이는 함수
+        /// [문자열 길이][문자열 데이터...]
+        /// </summary>
+        /// <param name="buffer">직렬화 된 패킷(버퍼)</param>
+        /// <param name="offset">읽어들이기 시작할 버퍼의 오프셋</param>
+        /// <param name="result">읽어들인 string</param>
+        /// <returns>처리한 바이트 개수</returns>
         public static ushort ReadStringData(ArraySegment<byte> buffer, int offset, out string result)
         {
             ushort process = 0;
@@ -117,6 +146,13 @@ namespace H00N.Network
             return process;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 리스트 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendListData<T>(List<T> data, ArraySegment<byte> buffer, int offset) where T : DataPacket, new()
         {
             ushort process = 0;
@@ -128,6 +164,13 @@ namespace H00N.Network
             return process;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 데이터 패킷을 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendDataPacket<T>(T data, ArraySegment<byte> buffer, int offset) where T : DataPacket, new()
         {
             ushort process = 0;
@@ -136,6 +179,13 @@ namespace H00N.Network
             return process;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 int 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendIntData(int data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(int);
@@ -144,6 +194,13 @@ namespace H00N.Network
             return length;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 ushort 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendUShortData(ushort data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(ushort);
@@ -152,6 +209,13 @@ namespace H00N.Network
             return length;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 short 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendShortData(short data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(ushort);
@@ -160,6 +224,13 @@ namespace H00N.Network
             return length;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 float 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendFloatData(float data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(float);
@@ -168,6 +239,13 @@ namespace H00N.Network
             return length;
         }
 
+        /// <summary>
+        /// buffer의 offset부터 string 데이터를 작성하는 함수
+        /// </summary>
+        /// <param name="data">적을 데이터</param>
+        /// <param name="buffer">적을 버퍼(공간)</param>
+        /// <param name="offset">적기 시작할 버퍼의 offset</param>
+        /// <returns>작성한 바이트 개수</returns>
         public static ushort AppendStringData(string data, ArraySegment<byte> buffer, int offset)
         {
             ushort length = sizeof(ushort);
