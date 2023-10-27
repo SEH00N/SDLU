@@ -1,0 +1,12 @@
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.csproj.AssemblyReference.cache
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.AssemblyInfoInputs.cache
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.AssemblyInfo.cs
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.csproj.CoreCompileInputs.cache
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\bin\Debug\netstandard2.1\Packets.deps.json
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\bin\Debug\netstandard2.1\Packets.dll
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\bin\Debug\netstandard2.1\Packets.pdb
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\bin\Debug\netstandard2.1\H00N.Network.dll
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.csproj.CopyComplete
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.dll
+D:\GitHub\SDLU\ServerLecture\MyGame\ThisIsMove_Server\Packets\obj\Debug\netstandard2.1\Packets.pdb
